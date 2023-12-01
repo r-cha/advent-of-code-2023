@@ -10,17 +10,15 @@ let rec calibrate = function
 let calibration_value () =
     let line = read_line () in
     let l = List.init (String.length line) (String.get line) in
-    let first = calibrate l in
-    let last = calibrate (List.rev l) in
-    String.make 1 first  ^ String.make 1 last;;
+    let first = String.make 1 (calibrate l) in
+    let last = String.make 1 (calibrate (List.rev l)) in
+    first ^ last;;
 
 let rec accumulate_calibrations tot =
     try
         let v = int_of_string (calibration_value ()) in
-        accumulate_calibrations v + tot
+        accumulate_calibrations (v + tot)
     with
         End_of_file -> tot;;
 
-accumulate_calibrations 0
-    |> string_of_int
-    |> print_endline;;
+let solve = accumulate_calibrations 0;;

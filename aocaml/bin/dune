@@ -1,4 +1,4 @@
-(executables
- (names warmup day1)
- (public_names warmup aocaml)
- (libraries aocaml))
+(executable
+ (name aocaml)
+ (public_name aocaml)
+ (libraries aocamlib))
