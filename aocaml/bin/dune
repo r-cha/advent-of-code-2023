@@ -1,0 +1,4 @@
+(executables
+ (names warmup)
+ (public_names aocaml)
+ (libraries aocaml))

@@ -1,0 +1,22 @@
+(lang dune 3.12)
+
+(name aocaml)
+
+(generate_opam_files true)
+
+(source
+ (github r-cha/advent-of-code-2023))
+
+(authors "Robert Chandler")
+
+(license LICENSE)
+
+(package
+ (name aocaml)
+ (synopsis "Advent of Code 2023")
+ (description "We'll see how far I can get in OCaml")
+ (depends ocaml dune)
+ (tags
+  (advent-of-code ocaml)))
+
+; See the complete stanza docs at https://dune.readthedocs.io/en/stable/dune-files.html#dune-project
