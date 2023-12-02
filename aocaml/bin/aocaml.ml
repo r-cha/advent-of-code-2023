@@ -1,3 +1,3 @@
 open Aocamlib;;
 
-let () = Day_1.compare ()
+let () = Day_2.compare ();;
