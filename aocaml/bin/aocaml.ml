@@ -1,3 +1,3 @@
 open Aocamlib
 
-let () = Day_2.compare ()
+let () = Day_3.run ()

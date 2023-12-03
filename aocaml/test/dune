@@ -1,2 +1,4 @@
 (test
- (name test_aocaml))
+ (name test_aocaml)
+ (modules test_aocaml)
+ (libraries alcotest aocamlib))
