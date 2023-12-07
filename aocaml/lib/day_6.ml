@@ -1,14 +1,3 @@
-(*
-   Races last Time milliseconds and the record distance is distance.
-   Holding the button for X milliseconds makes the boat travel X milliseconds per second upon release.
-
-   (7, 9) -> [2,5]
-   (15, 40) -> [4, 11]
-   (30, 200) -> [11, 19]
-*)
-
-let test = "Time:      7  15   30\nDistance:  9  40  200"
-
 type race =
   { time : int
   ; distance : int
@@ -54,16 +43,12 @@ let ways_to_win (r : race) =
   (* The most naive possible approach *)
   List.fold_left
     (fun count held ->
-      if winning r.distance @@ distance ~held ~allowed:r.time
-      then (* let _ = Printf.printf "%d " held in *)
-        count + 1
-      else count)
+      if winning r.distance @@ distance ~held ~allowed:r.time then count + 1 else count)
     0
     (range (r.time - 1))
 ;;
 
 let margin prod_acc (r : race) =
-  let _ = Printf.printf "RACE %d %d  |  " r.time r.distance in
   let winning_ways = ways_to_win r in
   let _ = print_endline "" in
   prod_acc * winning_ways
