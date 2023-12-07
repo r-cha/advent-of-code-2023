@@ -14,14 +14,32 @@ type race =
   ; distance : int
   }
 
+let fix_line_1 line =
+  List.nth (String.split_on_char ':' line) 1
+  |> String.trim
+  |> String.split_on_char ' '
+  |> List.filter (fun s -> String.length s > 0)
+  |> List.map int_of_string
+;;
+
+let fix_line_2 line =
+  [ line
+    |> String.fold_left
+         (fun acc c ->
+           match c with
+           | '0' .. '9' -> c :: acc
+           | _ -> acc)
+         []
+    |> List.rev
+    |> List.to_seq
+    |> String.of_seq
+    |> int_of_string
+  ]
+;;
+
 let parse input =
-  let fix_line line =
-    List.nth (String.split_on_char ':' line) 1
-    |> String.trim
-    |> String.split_on_char ' '
-    |> List.filter (fun s -> String.length s > 0)
-    |> List.map int_of_string
-  in
+  let fix_line = fix_line_2 in
+  (* Just hotswap fix_line for running different parts*)
   let lines = String.split_on_char '\n' input |> List.map fix_line in
   let times = List.nth lines 0 in
   let distances = List.nth lines 1 in
@@ -56,7 +74,6 @@ let filename = "data/day_6.txt"
 
 let solve filename =
   let read_whole_file filename =
-    (* open_in_bin works correctly on Unix and Windows *)
     let ch = open_in_bin filename in
     let s = really_input_string ch (in_channel_length ch) in
     close_in ch;
