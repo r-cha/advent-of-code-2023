@@ -1,3 +1,3 @@
 open Aocamlib
 
-let () = Day_6.run ()
+let () = Day_5.run ()

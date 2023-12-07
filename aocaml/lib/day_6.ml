@@ -50,7 +50,6 @@ let ways_to_win (r : race) =
 
 let margin prod_acc (r : race) =
   let winning_ways = ways_to_win r in
-  let _ = print_endline "" in
   prod_acc * winning_ways
 ;;
 
