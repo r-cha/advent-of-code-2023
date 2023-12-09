@@ -51,7 +51,7 @@ let build_map l =
     | [ d; s; r ] -> { destination_start = d; source_start = s; range = r } :: acc
     | _ -> failwith "invalid row"
   in
-  List.fold_left folder [] rows
+  List.rev @@ List.fold_left folder [] rows
 ;;
 
 let rec lookup source ranges =
@@ -60,9 +60,23 @@ let rec lookup source ranges =
   match ranges with
   | [] -> source
   | row :: tail ->
-    if source - row.range < row.source_start
-    then row.destination_start + (source - row.source_start)
-    else lookup source tail
+    let dest =
+      let diff = source - row.source_start in
+      if diff < row.range && diff >= 0
+      then row.destination_start + diff
+      else lookup source tail
+    in
+    dest
+;;
+
+let rec follow_maps maps source =
+  (* Punch through the list of maps *)
+  match maps with
+  | [] -> source
+  | h :: t ->
+    let dest = lookup source h in
+    let _ = Printf.printf "%d -> %d\n" source dest in
+    follow_maps t dest
 ;;
 
 let split_maps l =
@@ -85,10 +99,18 @@ let do_the_thing input =
   let lines = input |> String.split_on_char '\n' in
   let seeds = lines |> List.hd |> process_seeds in
   let maps = lines |> drop_first |> split_maps |> List.map build_map in
-  lookup (List.hd seeds) (List.hd maps)
+  let results = List.map (follow_maps maps) seeds in
+  let _ = List.iter (Printf.printf "%d\t") results in
+  let _ = print_newline () in
+  (* follow_maps maps (List.hd seeds) *)
+  List.fold_left min (List.hd results) results
 ;;
 
-let filename = "data/day_5_test.txt"
+let filename = "data/day_5.txt"
+(*
+   156940322 too high
+   156940322 still just as high
+*)
 
 let solve filename =
   let read_whole_file filename =

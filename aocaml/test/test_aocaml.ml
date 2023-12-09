@@ -16,10 +16,14 @@ let test_process_seeds () =
 ;;
 
 let test_build_map () =
-  let map = "seed-to-soil map:\n50 98 2\n52 50 48" in
-  let expected = 81 in
-  let actual = Day_5.lookup 79 @@ Day_5.build_map map in
-  check int "build_map" expected actual
+  let map = [ "seed-to-soil map:"; "50 98 2"; "52 50 48" ] in
+  let test_data = [ 79, 81; 14, 14; 55, 57; 13, 13 ] in
+  let made_map = Day_5.build_map map in
+  for i = 0 to List.length test_data - 1 do
+    let seed, expected = List.nth test_data i in
+    let actual = Day_5.lookup seed made_map in
+    check int "build_map" expected actual
+  done
 ;;
 
 let tests =
