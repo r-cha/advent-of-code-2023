@@ -27,7 +27,7 @@ let score_card = function
   | 'A' -> 14
   | 'K' -> 13
   | 'Q' -> 12
-  | 'J' -> 11
+  | 'J' -> 0
   | 'T' -> 10
   | c -> int_of_char c - int_of_char '0'
 ;;
@@ -38,9 +38,25 @@ let count_unique_elements_naive list =
   List.sort_uniq Char.compare list |> List.map (fun e -> e, count_element e list)
 ;;
 
+let combine_jokers sorted_counts =
+  (* Find joker count and add it to the max count, then remove the joker count *)
+  let joker_count = List.assoc 'J' sorted_counts in
+  let stripped_counts = List.remove_assoc 'J' sorted_counts in
+  match stripped_counts with
+  | [] -> [ 'J', joker_count ]
+  | _ ->
+    let max_count = List.hd stripped_counts in
+    (fst max_count, snd max_count + joker_count) :: List.tl stripped_counts
+;;
+
 let determine_kind (cards : char list) =
   let counts = count_unique_elements_naive cards in
   let sorted_counts = List.sort (fun (_, a) (_, b) -> b - a) counts in
+  let sorted_counts =
+    if List.mem_assoc 'J' sorted_counts
+    then combine_jokers sorted_counts
+    else sorted_counts
+  in
   let kind =
     match List.length sorted_counts with
     | 1 -> FiveKind
@@ -117,7 +133,7 @@ let solve filename =
 
 let filename = "data/day_7.txt"
 
-(* Part 1: 250254244 *)
+(* Part 1: 250254244; Part 2: 250087440 *)
 
 let run () =
   print_int (solve filename);
