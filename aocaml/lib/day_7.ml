@@ -103,7 +103,6 @@ let calculate_total_winnings (hands : hand list) =
 
 let parse_hand line =
   match String.split_on_char ' ' line with
-  | [] -> failwith "Empty line"
   | [ cardstring; bidstring ] ->
     let cards = String.to_seq cardstring |> List.of_seq in
     let bid = int_of_string bidstring in
