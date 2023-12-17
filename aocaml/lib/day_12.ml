@@ -38,7 +38,7 @@ let extract_groups record =
 let score_group group =
   let max_score = String.length group in
   let min_score = () (*Shortest contiguous # substring *) in
-  ()
+  min_score, max_score
 ;;
 
 let find_arrangements record =
